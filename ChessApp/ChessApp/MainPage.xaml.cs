@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR.Client;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,38 @@ namespace ChessApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private IHubProxy _hub;
+
         public MainPage()
         {
             this.InitializeComponent();
+            ConfigureHub();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SendMessage(TextBoxMessage.Text.ToString());
+        }
+
+        private void SendMessage(string msg)
+        {
+            _hub.Invoke("SendAction", msg);
+        }
+
+        public void ConfigureHub()
+        {
+            string url = @"http://xpesdcompany-001-site3.ctempurl.com/apis/ChessNotificationsService/signalr/hubs";
+            var connection = new HubConnection(url);
+            _hub = connection.CreateHubProxy("chesshub");
+
+            _hub.On("ActionRequested", result =>
+            {
+                var x = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    lstMessages.Items.Add(result);
+                });
+            });
+            connection.Start().Wait();
         }
     }
 }

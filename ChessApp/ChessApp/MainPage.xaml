@@ -8,6 +8,8 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Button Content="Hello, World!" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click"/>
+        <ListView x:Name="lstMessages" HorizontalAlignment="Center" Height="185" VerticalAlignment="Top" Width="300" Margin="66,80,66,0"/>
+        <TextBox x:Name="TextBoxMessage" HorizontalAlignment="Center" Margin="0,314,0,0" TextWrapping="Wrap" Text="Hello. My name is Mariana" VerticalAlignment="Top"/>
     </Grid>
 </Page>
