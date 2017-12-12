@@ -8,8 +8,32 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button Content="Hello, World!" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click"/>
-        <ListView x:Name="lstMessages" HorizontalAlignment="Center" Height="185" VerticalAlignment="Top" Width="300" Margin="66,80,66,0"/>
-        <TextBox x:Name="TextBoxMessage" HorizontalAlignment="Center" Margin="0,314,0,0" TextWrapping="Wrap" Text="Hello. My name is Mariana" VerticalAlignment="Top"/>
+        <Button Content="Hello, World!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click" />
+        <ListView x:Name="lstMessages" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="300" Margin="0,0,0, 50"/>
+        <TextBox x:Name="TextBoxMessage" HorizontalAlignment="Center" Margin="0,314,0,0" TextWrapping="Wrap" Text="Hello. My name is Mariana" VerticalAlignment="Bottom"/>
+        <Grid Name="board" HorizontalAlignment="Center" Height="400" VerticalAlignment="Center" Width="400">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        
+        
     </Grid>
 </Page>
