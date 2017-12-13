@@ -21,6 +21,7 @@ using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
 using Windows.UI.Core;
 using Windows.Devices.Sensors;
+using Windows.Devices.Geolocation;
 
 namespace ChessApp
 {
@@ -32,6 +33,8 @@ namespace ChessApp
         private IHubProxy _hub;
         SolidColorBrush black = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 229, 229, 229));
         SolidColorBrush white = new SolidColorBrush(Windows.UI.Colors.White);
+        SolidColorBrush dark = new SolidColorBrush(Windows.UI.Colors.Black);
+        SolidColorBrush mediumDark = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 45, 45, 48));
 
         Piece queenB, queenW;
         Piece kingB, kingW;
@@ -39,30 +42,83 @@ namespace ChessApp
         Piece rookB, rookW;
         Piece bishopB, bishopW;
         Piece knightB, knightW;
-        LightSensor mylightSensor;   
+        LightSensor mylightSensor;
+        uint _desireAccuracyInMetersValue = 5;
 
-        public MainPage()
+
+
+
+    public MainPage()
         {
             this.InitializeComponent();
             ConfigureHub();
             CreatePieces();
             CreateGrid();
             StartLightSensor();
-            
+            getLocation();           
         }
 
-        public async void StartLightSensor()
+
+        public async void getLocation()
+        {
+            var accessStatus = await Geolocator.RequestAccessAsync();
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
+
+                    // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
+                    Geolocator geolocator = new Geolocator { DesiredAccuracyInMeters = _desireAccuracyInMetersValue };
+                    // Carry out the operation.
+                    Geoposition pos = await geolocator.GetGeopositionAsync();
+
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        this.txtGPS.Text = pos.ToString();
+                    });
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        public void StartLightSensor()
         {
             mylightSensor = LightSensor.GetDefault();
             mylightSensor.ReportInterval = 15;
             mylightSensor.ReadingChanged += MylightSensor_ReadingChanged;
         }
 
-        private void MylightSensor_ReadingChanged(LightSensor sender, LightSensorReadingChangedEventArgs args)
+        private async void MylightSensor_ReadingChanged(LightSensor sender, LightSensorReadingChangedEventArgs args)
         {
             LightSensorReading read = args.Reading;
-            string values = String.Format("Light Sensor Reading:\t{0}\t{1}", args.Reading.Timestamp.ToString(), args.Reading.IlluminanceInLux.ToString());
-            txtLuxValue.Text = values;
+            string values = String.Format("Light:\t{0}", args.Reading.IlluminanceInLux);
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                this.txtLuxValue.Text = values;
+                if (args.Reading.IlluminanceInLux < 50)
+                {
+                    MainGrid.Background = mediumDark;
+                    txtLuxValue.Foreground = white;
+                    Title.Foreground = white;
+                    boton.Foreground = dark;
+                    boton.Background = white;
+                    lstMessages.Foreground = white;
+                    lstMessages.Background = white;
+
+                }
+                else
+                {
+                    MainGrid.Background = white;
+                    txtLuxValue.Foreground = dark;
+                    Title.Foreground = dark;
+                    boton.Foreground = white;
+                    boton.Background = dark;
+                    lstMessages.Foreground = dark;
+                }
+            });
+            
         }
 
         public void CreatePieces()
