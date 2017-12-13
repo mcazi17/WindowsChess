@@ -36,14 +36,14 @@
         </Grid>
         <TextBlock Name="Title" FontSize="40" FontFamily="Montserrat" FontWeight="Normal" TextWrapping="WrapWholeWords" HorizontalAlignment="Left" Margin="50,30,0,0" Text="the king is dead" VerticalAlignment="Top" Width="136"/>
         <TextBlock x:Name="txtLuxValue" HorizontalAlignment="Left" Height="20" Margin="56,180,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="131"/>
-        <TextBlock x:Name="txtGPS" HorizontalAlignment="Left" Height="20" Margin="56,200,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="131"/>
+        <TextBlock x:Name="txtGPS" HorizontalAlignment="Left" Height="20" Margin="187,180,0,0" TextWrapping="Wrap" Text="Location: " VerticalAlignment="Top" Width="258"/>
         <Image Name="ProfilePic" HorizontalAlignment="Right" Height="120" Margin="0,30,50,0" VerticalAlignment="Top" Width="120"/>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar Opening="CommandBar_Opening" Closing="CommandBar_Closing" ClosedDisplayMode="Minimal">
             <AppBarButton Icon="Camera" Label="Camera" Click="OpenCamera"/>
-            <AppBarButton Icon="AddFriend" Label="Send friend request"/>
-            <AppBarButton Icon="AddFriend" Label="Invite friend"/>
+            <AppBarButton Icon="AddFriend" Label="Send friend request" Click="AddFriend"/>
+            <AppBarButton Icon="AddFriend" Label="Play with friend"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

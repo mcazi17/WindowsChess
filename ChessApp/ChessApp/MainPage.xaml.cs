@@ -61,25 +61,17 @@ namespace ChessApp
 
         public async void getLocation()
         {
-            var accessStatus = await Geolocator.RequestAccessAsync();
-            switch (accessStatus)
+            Geolocator geolocator = new Geolocator { DesiredAccuracyInMeters = _desireAccuracyInMetersValue };
+            Geoposition pos = await geolocator.GetGeopositionAsync();
+            string latitude = pos.Coordinate.Point.Position.Latitude.ToString("##.##");
+            string longitude = pos.Coordinate.Point.Position.Longitude.ToString("##.##");
+
+
+
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                case GeolocationAccessStatus.Allowed:
-
-                    // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
-                    Geolocator geolocator = new Geolocator { DesiredAccuracyInMeters = _desireAccuracyInMetersValue };
-                    // Carry out the operation.
-                    Geoposition pos = await geolocator.GetGeopositionAsync();
-
-                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                    {
-                        this.txtGPS.Text = pos.ToString();
-                    });
-
-                    break;
-                default:
-                    break;
-            }
+                this.txtGPS.Text = ("Location: " + latitude +", "+ longitude);
+            });
         }
 
 
@@ -101,6 +93,7 @@ namespace ChessApp
                 {
                     MainGrid.Background = mediumDark;
                     txtLuxValue.Foreground = white;
+                    txtGPS.Foreground = white;
                     Title.Foreground = white;
                     boton.Foreground = dark;
                     boton.Background = white;
@@ -112,6 +105,7 @@ namespace ChessApp
                 {
                     MainGrid.Background = white;
                     txtLuxValue.Foreground = dark;
+                    txtGPS.Foreground = dark;
                     Title.Foreground = dark;
                     boton.Foreground = white;
                     boton.Background = dark;
@@ -262,6 +256,11 @@ namespace ChessApp
             await bitmapSource.SetBitmapAsync(softwareBitmapBGR8);
 
             ProfilePic.Source = bitmapSource;
+        }
+
+        private void AddFriend(object sender, RoutedEventArgs e)
+        {
+            SendMessage("{'id':9459, 'type':2}");
         }
 
         private void Send(object sender, RoutedEventArgs e)
