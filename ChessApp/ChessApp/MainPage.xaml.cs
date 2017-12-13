@@ -19,6 +19,8 @@ using Windows.Media.Capture;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
+using Windows.UI.Core;
+using Windows.Devices.Sensors;
 
 namespace ChessApp
 {
@@ -28,8 +30,8 @@ namespace ChessApp
     public sealed partial class MainPage : Page
     {
         private IHubProxy _hub;
-        SolidColorBrush black = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 134, 187, 215));
-        SolidColorBrush white = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 148, 147, 145));
+        SolidColorBrush black = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 229, 229, 229));
+        SolidColorBrush white = new SolidColorBrush(Windows.UI.Colors.White);
 
         Piece queenB, queenW;
         Piece kingB, kingW;
@@ -37,8 +39,7 @@ namespace ChessApp
         Piece rookB, rookW;
         Piece bishopB, bishopW;
         Piece knightB, knightW;
-
-
+        LightSensor mylightSensor;   
 
         public MainPage()
         {
@@ -46,9 +47,25 @@ namespace ChessApp
             ConfigureHub();
             CreatePieces();
             CreateGrid();
+            StartLightSensor();
+            
         }
 
-       public void CreatePieces()
+        public async void StartLightSensor()
+        {
+            mylightSensor = LightSensor.GetDefault();
+            mylightSensor.ReportInterval = 15;
+            mylightSensor.ReadingChanged += MylightSensor_ReadingChanged;
+        }
+
+        private void MylightSensor_ReadingChanged(LightSensor sender, LightSensorReadingChangedEventArgs args)
+        {
+            LightSensorReading read = args.Reading;
+            string values = String.Format("Light Sensor Reading:\t{0}\t{1}", args.Reading.Timestamp.ToString(), args.Reading.IlluminanceInLux.ToString());
+            txtLuxValue.Text = values;
+        }
+
+        public void CreatePieces()
         {
             queenB = new Queen("b");
             queenW = new Queen("w");
@@ -81,37 +98,74 @@ namespace ChessApp
 
                     if(x % 2 == 0 && y % 2 == 0 || x % 2 != 0 && y % 2 != 0)
                     {
-                        tmpButton.Background = black;
-                        if (y == 1)
-                        {
-                                tmpButton.Content = new Pawn("w").Image;
-                        }
+                        tmpButton.Background = white;
                     }
                     else
                     {
-                        tmpButton.Background = white;
-                        switch (y)
-                        {
-                            case 1:
-                                tmpButton.Content = new Pawn("w").Image;
-                                break;
-                            case 6:
-                                tmpButton.Content = new Pawn("b").Image;
-                                break;
-                            default:
-                                break;
-
-                        }
+                        tmpButton.Background = black;
                     }
 
-                    if (x == 0 & y == 0 || x == 7 & y == 0)
+                    switch (y)
                     {
-                        tmpButton.Content = new Rook("w").Image;
-                    }else if (x == 0 & y == 7 || x == 7 & y == 7)
-                    {
-                        tmpButton.Content = new Rook("b").Image;
+                        case 0:
+                            switch (x)
+                            {
+                                case 0:
+                                case 7:
+                                    tmpButton.Content = new Rook("w").Image;
+                                    break;
+                                case 1:
+                                case 6:
+                                    tmpButton.Content = new Knight("w").Image;
+                                    break;
+                                case 2:
+                                case 5:
+                                    tmpButton.Content = new Bishop("w").Image;
+                                    break;
+                                case 3:
+                                    tmpButton.Content = new Queen("w").Image;
+                                    break;
+                                case 4:
+                                    tmpButton.Content = new King("w").Image;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 1:
+                            tmpButton.Content = new Pawn("w").Image;
+                            break;
+                        case 6:
+                            tmpButton.Content = new Pawn("b").Image;
+                            break;
+                        case 7:
+                            switch (x)
+                            {
+                                case 0:
+                                case 7:
+                                    tmpButton.Content = new Rook("b").Image;
+                                    break;
+                                case 1:
+                                case 6:
+                                    tmpButton.Content = new Knight("b").Image;
+                                    break;
+                                case 2:
+                                case 5:
+                                    tmpButton.Content = new Bishop("b").Image;
+                                    break;
+                                case 3:
+                                    tmpButton.Content = new Queen("b").Image;
+                                    break;
+                                case 4:
+                                    tmpButton.Content = new King("b").Image;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
                     }
 
+                    
 
                     Grid.SetColumn(tmpButton, x);
                     Grid.SetRow(tmpButton, y);

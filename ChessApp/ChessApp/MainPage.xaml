@@ -35,6 +35,10 @@
             </Grid.ColumnDefinitions>
         </Grid>
         <TextBlock FontSize="40" FontFamily="Montserrat" FontWeight="Normal" TextWrapping="WrapWholeWords" HorizontalAlignment="Left" Margin="50,30,0,0" Text="the king is dead" VerticalAlignment="Top" Width="136"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="50,180,0,0" TextWrapping="Wrap" Text="LUX Reading: " VerticalAlignment="Top" Width="89"/>
+        <TextBlock x:Name="txtLuxValue" HorizontalAlignment="Right" Height="20" Margin="0,180,50,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="307"/>
+
+
         <Image Name="ProfilePic" HorizontalAlignment="Right" Height="120" Margin="0,30,50,0" VerticalAlignment="Top" Width="120"/>
     </Grid>
     <Page.BottomAppBar>
