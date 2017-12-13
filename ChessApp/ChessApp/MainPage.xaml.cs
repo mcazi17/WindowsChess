@@ -15,8 +15,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+using Windows.Media.Capture;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.Graphics.Imaging;
 
 namespace ChessApp
 {
@@ -35,6 +37,8 @@ namespace ChessApp
         Piece rookB, rookW;
         Piece bishopB, bishopW;
         Piece knightB, knightW;
+
+
 
         public MainPage()
         {
@@ -117,8 +121,40 @@ namespace ChessApp
             }            
         }
 
-        //Hello world button click
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OpenCamera(object sender, RoutedEventArgs e)
+        {
+            TakePicture();
+        }
+
+
+        public async void TakePicture()
+        {
+            CameraCaptureUI captureUI = new CameraCaptureUI();
+            captureUI.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Jpeg;
+            captureUI.PhotoSettings.CroppedSizeInPixels = new Size(120, 120);
+
+            StorageFile photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
+
+            if (photo == null)
+            {
+                return;
+            }
+
+            IRandomAccessStream stream = await photo.OpenAsync(FileAccessMode.Read);
+            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
+            SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+
+            SoftwareBitmap softwareBitmapBGR8 = SoftwareBitmap.Convert(softwareBitmap,
+            BitmapPixelFormat.Bgra8, 
+            BitmapAlphaMode.Premultiplied);
+
+            SoftwareBitmapSource bitmapSource = new SoftwareBitmapSource();
+            await bitmapSource.SetBitmapAsync(softwareBitmapBGR8);
+
+            ProfilePic.Source = bitmapSource;
+        }
+
+        private void Send(object sender, RoutedEventArgs e)
         {
             SendMessage(TextBoxMessage.Text.ToString());
         }
@@ -147,6 +183,18 @@ namespace ChessApp
                 });
             });
             connection.Start().Wait();
+        }
+
+        private void CommandBar_Opening(object sender, object e)
+        {
+            CommandBar cb = sender as CommandBar;
+            if (cb != null) cb.Background.Opacity = 1.0;
+        }
+
+        private void CommandBar_Closing(object sender, object e)
+        {
+            CommandBar cb = sender as CommandBar;
+            if (cb != null) cb.Background.Opacity = 0.5;
         }
     }
 }

@@ -5,13 +5,14 @@
     xmlns:local="using:ChessApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Width="500.6">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button Name ="boton" Content="Hello, World!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click" Margin="316,0,10,0" />
-        <ListView x:Name="lstMessages" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="400" Margin="16,0,16,37" SelectionMode="None"/>
-        <TextBox x:Name="TextBoxMessage" HorizontalAlignment="Center" Margin="16,0,121,0" TextWrapping="Wrap" Text="Hello. My name is Mariana" VerticalAlignment="Bottom" Width="295"/>
-        <Grid Name="board" HorizontalAlignment="Center" Height="390" VerticalAlignment="Center" Width="390">
+
+        <Button Name ="boton" Content="Send" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Send" Margin="0,0,50,20" Width="79" />
+        <ListView x:Name="lstMessages" HorizontalAlignment="Center" Height="75" VerticalAlignment="Bottom" Width="390" Margin="0,0,0,60" SelectionMode="None"/>
+        <TextBox x:Name="TextBoxMessage" HorizontalAlignment="Left" Margin="50,0,0,20" TextWrapping="Wrap" PlaceholderText="Send message" VerticalAlignment="Bottom" Width="310"/>
+        <Grid Name="board" HorizontalAlignment="Center" Height="390" VerticalAlignment="Center" Width="390" Margin="0, 80, 0, 0">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -33,5 +34,14 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
         </Grid>
+        <TextBlock FontSize="40" FontFamily="Montserrat" FontWeight="Normal" TextWrapping="WrapWholeWords" HorizontalAlignment="Left" Margin="50,30,0,0" Text="the king is dead" VerticalAlignment="Top" Width="136"/>
+        <Image Name="ProfilePic" HorizontalAlignment="Right" Height="120" Margin="0,30,50,0" VerticalAlignment="Top" Width="120"/>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar Opening="CommandBar_Opening" Closing="CommandBar_Closing" ClosedDisplayMode="Minimal">
+            <AppBarButton Icon="Camera" Label="Camera" Click="OpenCamera"/>
+            <AppBarButton Icon="AddFriend" Label="Send friend request"/>
+            <AppBarButton Icon="AddFriend" Label="Invite friend"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
