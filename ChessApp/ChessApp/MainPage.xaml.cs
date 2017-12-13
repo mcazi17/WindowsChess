@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -24,11 +25,26 @@ namespace ChessApp
     public sealed partial class MainPage : Page
     {
         private IHubProxy _hub;
+        SolidColorBrush black = new SolidColorBrush(Windows.UI.Colors.Black);
+        SolidColorBrush white = new SolidColorBrush(Windows.UI.Colors.White);
+        Image queenB = new Image();
+        Image queenW = new Image();
+        Image kingB = new Image();
+        Image kingW = new Image();
+        Image rookB = new Image();
+        Image rookW = new Image();
+        Image pawnB = new Image();
+        Image pawnW = new Image();
+        Image knightB = new Image();
+        Image knightW = new Image();
+        Image bishopW = new Image();
+        Image bishopB = new Image();
 
         public MainPage()
         {
             this.InitializeComponent();
             ConfigureHub();
+            CreatePieces();
             CreateGrid();
         }
 
@@ -47,28 +63,29 @@ namespace ChessApp
                         Height = ButtonHeight
                     };
 
-                    if(x % 2 == 0 && y % 2 == 0)
+                    
+
+                    if(x % 2 == 0 && y % 2 == 0 || x % 2 != 0 && y % 2 != 0)
                     {
-                        tmpButton.Foreground = 
+                        tmpButton.Background = black;
+                    }
+                    else
+                    {
+                        tmpButton.Background = white;                        
                     }
 
-                    Grid.SetColumn(tmpButton, y);
-                    Grid.SetRow(tmpButton, x);
+                    Grid.SetColumn(tmpButton, x);
+                    Grid.SetRow(tmpButton, y);
                     this.board.Children.Add(tmpButton);
                 }
-            }
+            }            
+        }
 
-            //Button button = new Button
-            //{
-            //    Height = ButtonHeight,
-            //    Width = ButtonWidth
-            //};
-
-            //for(int x = 1; x <= 64; x++)
-            //{
-            //    board.Children.Add(button);
-            //}
-            
+        private void CreatePieces()
+        {
+            //Grid.SetColumn();
+            //Grid.SetRow();
+            queenB.Source = new BitmapImage(new Uri("ms-appx:///Assets/queen.png", UriKind.Absolute));
         }
 
         //Hello world button click

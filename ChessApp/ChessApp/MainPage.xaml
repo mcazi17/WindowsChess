@@ -8,9 +8,9 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button Content="Hello, World!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click" />
-        <ListView x:Name="lstMessages" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="300" Margin="0,0,0, 50"/>
-        <TextBox x:Name="TextBoxMessage" HorizontalAlignment="Center" Margin="0,314,0,0" TextWrapping="Wrap" Text="Hello. My name is Mariana" VerticalAlignment="Bottom"/>
+        <Button Content="Hello, World!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click" Margin="316,0,10,0" />
+        <ListView x:Name="lstMessages" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="400" Margin="16,0,16,37" SelectionMode="None"/>
+        <TextBox x:Name="TextBoxMessage" HorizontalAlignment="Center" Margin="16,0,121,0" TextWrapping="Wrap" Text="Hello. My name is Mariana" VerticalAlignment="Bottom" Width="295"/>
         <Grid Name="board" HorizontalAlignment="Center" Height="400" VerticalAlignment="Center" Width="400">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
@@ -33,7 +33,5 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
         </Grid>
-        
-        
     </Grid>
 </Page>
